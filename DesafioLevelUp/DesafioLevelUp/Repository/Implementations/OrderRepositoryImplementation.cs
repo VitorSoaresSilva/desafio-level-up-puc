@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DesafioLevelUp.Services.Implementations
+namespace DesafioLevelUp.Repository.Implementations
 {
-    public class OrderServiceImplementation : IOrderService
+    public class OrderRepositoryImplementation : IOrderRepository
     {
         private MySQLContext _context;
-        public OrderServiceImplementation(MySQLContext context)
+        public OrderRepositoryImplementation(MySQLContext context)
         {
             _context = context;
         }
@@ -87,7 +87,7 @@ namespace DesafioLevelUp.Services.Implementations
             }
             return order;
         }
-        private bool Exists(int id)
+        public bool Exists(int id)
         {
             return _context.Orders.Any(x => x.Id.Equals(id));
         }

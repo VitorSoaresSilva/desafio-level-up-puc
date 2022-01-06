@@ -1,6 +1,6 @@
 using DesafioLevelUp.Models.Context;
-using DesafioLevelUp.Services;
-using DesafioLevelUp.Services.Implementations;
+using DesafioLevelUp.Business;
+using DesafioLevelUp.Business.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using DesafioLevelUp.Repository;
+using DesafioLevelUp.Repository.Implementations;
 
 namespace DesafioLevelUp
 {
@@ -30,7 +32,8 @@ namespace DesafioLevelUp
             services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
             
             //Dependency Injection
-            services.AddScoped<IOrderService, OrderServiceImplementation>();
+            services.AddScoped<IOrderBusiness, OrderBusinessImplementation>();
+            services.AddScoped<IOrderRepository, OrderRepositoryImplementation>();
 
             services.AddSwaggerGen(c =>
             {

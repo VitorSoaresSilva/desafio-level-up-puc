@@ -1,5 +1,5 @@
 ﻿using DesafioLevelUp.Models;
-using DesafioLevelUp.Services;
+using DesafioLevelUp.Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -11,23 +11,23 @@ namespace DesafioLevelUp.Controllers
     public class OrderController: ControllerBase
     {
         private readonly ILogger<OrderController> _logger;
-        private IOrderService _orderService;
-        public OrderController(ILogger<OrderController> logger,IOrderService orderService)
+        private IOrderBusiness _orderBusiness;
+        public OrderController(ILogger<OrderController> logger,IOrderBusiness orderService)
         {
             _logger = logger;
-            _orderService = orderService;
+            _orderBusiness = orderService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_orderService.FindAll());
+            return Ok(_orderBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var order = _orderService.FindById(id);
+            var order = _orderBusiness.FindById(id);
             if(order == null)
             {
                 return NotFound();
@@ -39,20 +39,20 @@ namespace DesafioLevelUp.Controllers
         public IActionResult Create([FromBody] Order order)
         {
             if (order == null) return BadRequest();
-            return Ok(_orderService.Create(order));
+            return Ok(_orderBusiness.Create(order));
         }
 
         [HttpPut]
         public IActionResult Update([FromBody] Order order)
         {
             if (order == null) return BadRequest();
-            return Ok(_orderService.Update(order));
+            return Ok(_orderBusiness.Update(order));
         }
 
         [HttpDelete]
         public IActionResult Delete(int id)
         {
-            _orderService.Delete(id);
+            _orderBusiness.Delete(id);
             return NoContent();
         }
         
