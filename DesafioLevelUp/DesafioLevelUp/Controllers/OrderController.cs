@@ -1,8 +1,6 @@
 ﻿using DesafioLevelUp.Models;
-using DesafioLevelUp.Business;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
+using DesafioLevelUp.Business.Generic;
 
 namespace DesafioLevelUp.Controllers
 {
@@ -10,12 +8,12 @@ namespace DesafioLevelUp.Controllers
     [Route("[controller]")]
     public class OrderController: ControllerBase
     {
-        private readonly ILogger<OrderController> _logger;
-        private IOrderBusiness _orderBusiness;
-        public OrderController(ILogger<OrderController> logger,IOrderBusiness orderService)
+        //private readonly ILogger<OrderController> _logger;
+        private IBusiness<Order> _orderBusiness;
+        public OrderController(IBusiness<Order> orderBusiness)
         {
-            _logger = logger;
-            _orderBusiness = orderService;
+            //_logger = logger;
+            _orderBusiness = orderBusiness;
         }
 
         [HttpGet]
@@ -40,13 +38,6 @@ namespace DesafioLevelUp.Controllers
         {
             if (order == null) return BadRequest();
             return Ok(_orderBusiness.Create(order));
-        }
-
-        [HttpPut]
-        public IActionResult Update([FromBody] Order order)
-        {
-            if (order == null) return BadRequest();
-            return Ok(_orderBusiness.Update(order));
         }
 
         [HttpDelete]

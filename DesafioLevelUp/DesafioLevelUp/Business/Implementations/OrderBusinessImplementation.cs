@@ -1,46 +1,28 @@
-﻿using DesafioLevelUp.Models;
-using DesafioLevelUp.Models.Context;
-using DesafioLevelUp.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using DesafioLevelUp.Business.Generic;
+using DesafioLevelUp.Models;
+using DesafioLevelUp.Repository.Generic;
 
 namespace DesafioLevelUp.Business.Implementations
 {
-    public class OrderBusinessImplementation : IOrderBusiness
+    public class OrderBusinessImplementation : GenericBusiness<Order>
     {
-        private readonly IOrderRepository _repository;
-        public OrderBusinessImplementation(IOrderRepository repository)
+        private readonly IRepository<Order> _repository;
+
+        public OrderBusinessImplementation(IRepository<Order> repository) : 
+            base(repository)
         {
             _repository = repository;
         }
-        public List<Order> FindAll()
-        {
-            return _repository.FindAll();
-        }
 
-        public Order FindById(int id)
+        public override void Delete(int id)
         {
-            return _repository.FindById(id);
-        }
+            Order order = _repository.FindById(id);
+            if(order != null)
+            {
+                order.Status = 'E';
+            }
 
-        public Order Create(Order order)
-        {
-            return _repository.Create(order);
-        }
-
-        public Order Update(Order order)
-        {
-            return _repository.Update(order);
-        }
-
-        public void Delete(int id)
-        {
-            _repository.Delete(id);
-        }
-        private bool Exists(int id)
-        {
-            return _repository.Exists(id);
+            _repository.Update(order);
         }
     }
 }
